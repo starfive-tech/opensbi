@@ -20,6 +20,13 @@
 	 */
 fw_boot_hart:
 	li	a0, -1
+#ifdef FW_PAYLOAD_NOPAD
+
+#include "fw_reloc_payload.S"
+
+	.globl _relocate_payload_done
+_relocate_payload_done:
+#endif
 	ret
 
 	.section .entry, "ax", %progbits
@@ -59,7 +66,11 @@ fw_next_arg1:
 	 * The next address should be returned in 'a0'.
 	 */
 fw_next_addr:
+#ifdef FW_PAYLOAD_NOPAD
+	li	a0, (FW_TEXT_START + FW_PAYLOAD_OFFSET)
+#else
 	lla	a0, payload_bin
+#endif
 	ret
 
 	.section .entry, "ax", %progbits

@@ -14,7 +14,7 @@ SECTIONS
 {
 	#include "fw_base.ldS"
 
-#ifdef FW_PAYLOAD_OFFSET
+#if defined(FW_PAYLOAD_OFFSET) && !defined(FW_PAYLOAD_NOPAD)
 	. = FW_TEXT_START + FW_PAYLOAD_OFFSET;
 #else
 	. = ALIGN(FW_PAYLOAD_ALIGN);
