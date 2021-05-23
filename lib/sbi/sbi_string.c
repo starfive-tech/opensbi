@@ -38,14 +38,13 @@ int sbi_strncmp(const char *a, const char *b, size_t count)
 
 size_t sbi_strlen(const char *str)
 {
-	unsigned long ret = 0;
+	const char* ostr = str;
 
 	while (*str != '\0') {
-		ret++;
 		str++;
 	}
 
-	return ret;
+	return str - ostr;
 }
 
 size_t sbi_strnlen(const char *str, size_t count)
