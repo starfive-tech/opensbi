@@ -27,14 +27,15 @@ __sbi_dubhe_L2_inv_range:
 	add	a1, a1, a0	/* Compute end address */
 	not	t2, t1
 	and	a0, a0, t2
+	fence	rw, rw
 1:
 	/* CDISCARD.L2 rs1 = a0 */
-	fence	rw, rw
 	.insn i 0x73, 0, x0, a0, -0x3A
-	fence	rw, rw
+
 	add	a0, a0, t0
 	blt	a0, a1, 1b
 2:
+	fence	rw, rw
 	ret
 
 	/*
@@ -55,12 +56,12 @@ __sbi_dubhe_L2_flush_range:
 	add	a1, a1, a0	/* Compute end address */
 	not	t2, t1
 	and	a0, a0, t2
+	fence	rw, rw
 1:
 	/* CFLUSH.L2 rs1 = a0 */
-	fence	rw, rw
 	.insn i 0x73, 0, x0, a0, -0x3C
-	fence	rw, rw
 	add	a0, a0, t0
 	blt	a0, a1, 1b
 2:
+	fence	rw, rw
 	ret
