@@ -46,6 +46,8 @@
 
 /* SBI function IDs for IPI extension*/
 #define SBI_EXT_IPI_SEND_IPI			0x0
+#define SBI_EXT_IPI_SEND_EXT_DOMAIN		0x1
+#define SBI_EXT_IPI_SET_AMP_DATA_ADDR		0x2
 
 /* SBI function IDs for RFENCE extension*/
 #define SBI_EXT_RFENCE_REMOTE_FENCE_I		0x0

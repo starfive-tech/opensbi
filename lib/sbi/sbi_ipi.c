@@ -11,6 +11,7 @@
 #include <sbi/riscv_asm.h>
 #include <sbi/riscv_atomic.h>
 #include <sbi/riscv_barrier.h>
+#include <sbi/sbi_console.h>
 #include <sbi/sbi_bitops.h>
 #include <sbi/sbi_domain.h>
 #include <sbi/sbi_error.h>
@@ -150,10 +151,25 @@ static struct sbi_ipi_event_ops ipi_smode_ops = {
 };
 
 static u32 ipi_smode_event = SBI_IPI_EVENT_MAX;
-
+static unsigned long* amp_data_addr;
 int sbi_ipi_send_smode(ulong hmask, ulong hbase)
 {
 	return sbi_ipi_send_many(hmask, hbase, ipi_smode_event, NULL);
+}
+
+int sbi_ipi_send_ext(u32 hartid, void *data, u32 msg_bits)
+{
+	if (!amp_data_addr)
+		return SBI_EINVAL;
+
+	atomic_raw_set_bit((1 << msg_bits), (void *)(amp_data_addr + hartid));
+
+	return sbi_ipi_send(sbi_scratch_thishart_ptr(), hartid, ipi_smode_event, NULL);
+}
+
+void sbi_ipi_set_amp_data_addr(unsigned long addr)
+{
+	amp_data_addr = (void *)addr;
 }
 
 void sbi_ipi_clear_smode(void)

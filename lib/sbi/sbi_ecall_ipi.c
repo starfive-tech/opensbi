@@ -13,6 +13,7 @@
 #include <sbi/sbi_ecall_interface.h>
 #include <sbi/sbi_trap.h>
 #include <sbi/sbi_ipi.h>
+#include <sbi/sbi_console.h>
 
 static int sbi_ecall_ipi_handler(unsigned long extid, unsigned long funcid,
 				 const struct sbi_trap_regs *regs,
@@ -23,6 +24,10 @@ static int sbi_ecall_ipi_handler(unsigned long extid, unsigned long funcid,
 
 	if (funcid == SBI_EXT_IPI_SEND_IPI)
 		ret = sbi_ipi_send_smode(regs->a0, regs->a1);
+	else if (funcid == SBI_EXT_IPI_SEND_EXT_DOMAIN)
+		ret = sbi_ipi_send_ext(regs->a1, NULL, regs->a2);
+	else if (funcid == SBI_EXT_IPI_SET_AMP_DATA_ADDR)
+		sbi_ipi_set_amp_data_addr(regs->a0);
 	else
 		ret = SBI_ENOTSUPP;
 
