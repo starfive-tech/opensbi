@@ -11,6 +11,7 @@
 #include <sbi/riscv_asm.h>
 #include <sbi/riscv_atomic.h>
 #include <sbi/riscv_barrier.h>
+#include <sbi/sbi_console.h>
 #include <sbi/sbi_bitops.h>
 #include <sbi/sbi_domain.h>
 #include <sbi/sbi_error.h>
@@ -150,7 +151,7 @@ static struct sbi_ipi_event_ops ipi_smode_ops = {
 };
 
 static u32 ipi_smode_event = SBI_IPI_EVENT_MAX;
-
+static unsigned long* amp_data_addr;
 int sbi_ipi_send_smode(ulong hmask, ulong hbase)
 {
 	return sbi_ipi_send_many(hmask, hbase, ipi_smode_event, NULL);
@@ -159,6 +160,34 @@ int sbi_ipi_send_smode(ulong hmask, ulong hbase)
 void sbi_ipi_clear_smode(void)
 {
 	csr_clear(CSR_MIP, MIP_SSIP);
+}
+
+int sbi_ipi_send_ext(u32 type, u32 hartid, u32 msg_bits)
+{
+	if (!amp_data_addr)
+		return SBI_EINVAL;
+
+	atomic_raw_set_bit(msg_bits, (void *)(amp_data_addr + hartid));
+
+	return sbi_ipi_send(sbi_scratch_thishart_ptr(), hartid, ipi_smode_event, NULL);
+}
+
+void sbi_ipi_set_amp_data_addr(unsigned long addr)
+{
+	amp_data_addr = (void *)addr;
+}
+
+void sbi_ipi_clear_ext_ipi(unsigned long addr)
+{
+	unsigned long msg_type;
+
+	if (!amp_data_addr)
+		return;
+
+	msg_type = atomic_raw_xchg_ulong(amp_data_addr + current_hartid(), 0);
+	*(unsigned long *)addr = msg_type;
+
+	sbi_ipi_clear_smode();
 }
 
 static void sbi_ipi_process_halt(struct sbi_scratch *scratch)

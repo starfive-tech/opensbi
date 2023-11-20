@@ -68,6 +68,9 @@ int sbi_ipi_event_create(const struct sbi_ipi_event_ops *ops);
 void sbi_ipi_event_destroy(u32 event);
 
 int sbi_ipi_send_smode(ulong hmask, ulong hbase);
+int sbi_ipi_send_ext(u32 linux_amp_type, u32 hartid, u32 msg_bits);
+void sbi_ipi_set_amp_data_addr(unsigned long addr);
+void sbi_ipi_clear_ext_ipi(unsigned long addr);
 
 void sbi_ipi_clear_smode(void);
 
