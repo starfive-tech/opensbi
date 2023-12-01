@@ -6,6 +6,6 @@
 # Author: Jun Liang Tan <junliang.tan@linux.starfivetech.com>
 #
 
-carray-platform_override_modules-y += starfive_jh8xxx
+carray-platform_override_modules-y += starfive_dubhe
 platform-objs-y += starfive/dubhe_cache.o
-platform-objs-y += starfive/jh8100.o
+platform-objs-y += starfive/dubhe.o

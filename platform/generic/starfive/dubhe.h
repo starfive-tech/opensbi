@@ -7,12 +7,12 @@
  *
  */
 
-#ifndef _STARFIVE_JH8100_H_
-#define _STARFIVE_JH8100_H_
+#ifndef _STARFIVE_DUBHE_H_
+#define _STARFIVE_DUBHE_H_
 
 enum sbi_ext_dubhe_cmo_fid {
 	SBI_EXT_STARFIVE_DUBHE_L2_FLUSH = 0,
 	SBI_EXT_STARFIVE_DUBHE_L2_INVALIDATE,
 };
 
-#endif /* _STARFIVE_JH8100_H_ */
+#endif /* _STARFIVE_DUBHE_H_ */

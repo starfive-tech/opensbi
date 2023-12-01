@@ -8,7 +8,7 @@
  */
 
 #include <cache.h>
-#include <jh8100.h>
+#include <dubhe.h>
 #include <platform_override.h>
 #include <sbi/sbi_console.h>
 #include <sbi_utils/fdt/fdt_helper.h>
@@ -36,13 +36,12 @@ static int starfive_vendor_ext_provider(long extid, long funcid,
 	return ret;
 }
 
-static const struct fdt_match starfive_jh8xxx_match[] = {
+static const struct fdt_match starfive_dubhe_match[] = {
 	{ .compatible = "starfive,dubhe" },
-	{ .compatible = "starfive,jh8100" },
 	{ },
 };
 
-const struct platform_override starfive_jh8xxx = {
-	.match_table = starfive_jh8xxx_match,
+const struct platform_override starfive_dubhe = {
+	.match_table = starfive_dubhe_match,
 	.vendor_ext_provider = starfive_vendor_ext_provider,
 };
