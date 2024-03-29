@@ -10,9 +10,22 @@
 #include <cache.h>
 #include <dubhe.h>
 #include <platform_override.h>
+#include <sbi/riscv_asm.h>
 #include <sbi/sbi_console.h>
 #include <sbi/sbi_error.h>
 #include <sbi_utils/fdt/fdt_helper.h>
+
+static void starfive_dubhe_pause_enable(void)
+{
+	csr_write(CSR_HART_CTRL, CSR_HART_PAUSE_EN_MASK);
+}
+
+static int starfive_dubhe_extensions_init(const struct fdt_match *match,
+					   struct sbi_hart_features *hfeatures)
+{
+	starfive_dubhe_pause_enable();
+	return 0;
+}
 
 static int starfive_vendor_ext_provider(long funcid,
 					struct sbi_trap_regs *regs,
@@ -44,5 +57,6 @@ static const struct fdt_match starfive_dubhe_match[] = {
 
 const struct platform_override starfive_dubhe = {
 	.match_table = starfive_dubhe_match,
+	.extensions_init = starfive_dubhe_extensions_init,
 	.vendor_ext_provider = starfive_vendor_ext_provider,
 };
