@@ -17,7 +17,7 @@
 
 static void starfive_dubhe_pause_enable(void)
 {
-	csr_write(CSR_HART_CTRL, CSR_HART_PAUSE_EN_MASK);
+	csr_set(CSR_HART_CTRL, CSR_HART_PAUSE_EN_MASK);
 }
 
 static int starfive_dubhe_extensions_init(const struct fdt_match *match,
