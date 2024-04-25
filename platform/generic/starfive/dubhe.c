@@ -51,7 +51,6 @@ static int starfive_vendor_ext_provider(long funcid,
 
 static const struct fdt_match starfive_dubhe_match[] = {
 	{ .compatible = "starfive,dubhe-90" },
-	{ .compatible = "starfive,dubhe-80" },
 	{ },
 };
 
